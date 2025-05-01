@@ -1,0 +1,31 @@
+{
+  "name": "arktrio-docs",
+  "version": "1.0.0",
+  "description": "Documentation for the Arktrio distributed messaging framework",
+  "scripts": {
+    "build": "jekyll build",
+    "serve": "jekyll serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arktrio/arktrio.git"
+  },
+  "keywords": [
+    "documentation",
+    "arktrio",
+    "distributed-systems",
+    "messaging"
+  ],
+  "author": "Arktrio Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arktrio/arktrio/issues"
+  },
+  "homepage": "https://arktrio.github.io/arktrio",
+  "devDependencies": {
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "postcss-cli": "^10.1.0"
+  }
+} 

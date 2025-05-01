@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2024-2025 TOYOTA MOTOR CORPORATION
-package arktwin.e2e
+package arktrio.e2e
 
-import arktwin.e2e.endpoints.*
+import arktrio.e2e.endpoints.*
 import io.gatling.core.Predef.*
 import io.gatling.http.Predef.*
 

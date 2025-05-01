@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2024-2025 TOYOTA MOTOR CORPORATION
-package arktwin.edge.actors
+package arktrio.edge.actors
 
-import arktwin.edge.actors.EdgeConfigurator.*
-import arktwin.edge.configs.{CoordinateConfig, CullingConfig, QuaternionConfig}
-import arktwin.edge.endpoints.EdgeConfigGet
-import arktwin.edge.test.ActorTestBase
+import arktrio.edge.actors.EdgeConfigurator.*
+import arktrio.edge.configs.{CoordinateConfig, CullingConfig, QuaternionConfig}
+import arktrio.edge.endpoints.EdgeConfigGet
+import arktrio.edge.test.ActorTestBase
 import org.apache.pekko.actor.typed.receptionist.Receptionist
 
 class EdgeConfiguratorSuite extends ActorTestBase:

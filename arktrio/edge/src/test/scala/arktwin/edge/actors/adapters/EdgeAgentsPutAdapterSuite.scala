@@ -1,21 +1,21 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2024-2025 TOYOTA MOTOR CORPORATION
-package arktwin.edge.actors.adapters
+package arktrio.edge.actors.adapters
 
-import arktwin.center.services.{ChartAgent, ClockBase}
-import arktwin.common.data.*
-import arktwin.edge.actors.adapters.EdgeAgentsPutAdapter.*
-import arktwin.edge.actors.sinks.{Chart, Clock}
-import arktwin.edge.configs.AxisConfig.Direction.{East, North, Up}
-import arktwin.edge.configs.CoordinateConfig.LengthUnit.Meter
-import arktwin.edge.configs.CoordinateConfig.SpeedUnit.MeterPerSecond
-import arktwin.edge.configs.{AxisConfig, CoordinateConfig, QuaternionConfig}
-import arktwin.edge.connectors.{ChartConnector, RegisterConnector}
-import arktwin.edge.data.*
-import arktwin.edge.endpoints.EdgeAgentsPut.{Request, Response}
-import arktwin.edge.endpoints.{EdgeAgentsPutRequestAgent, EdgeConfigGet}
-import arktwin.edge.test.ActorTestBase
-import arktwin.edge.util.{EdgeKamon, ErrorStatus}
+import arktrio.center.services.{ChartAgent, ClockBase}
+import arktrio.common.data.*
+import arktrio.edge.actors.adapters.EdgeAgentsPutAdapter.*
+import arktrio.edge.actors.sinks.{Chart, Clock}
+import arktrio.edge.configs.AxisConfig.Direction.{East, North, Up}
+import arktrio.edge.configs.CoordinateConfig.LengthUnit.Meter
+import arktrio.edge.configs.CoordinateConfig.SpeedUnit.MeterPerSecond
+import arktrio.edge.configs.{AxisConfig, CoordinateConfig, QuaternionConfig}
+import arktrio.edge.connectors.{ChartConnector, RegisterConnector}
+import arktrio.edge.data.*
+import arktrio.edge.endpoints.EdgeAgentsPut.{Request, Response}
+import arktrio.edge.endpoints.{EdgeAgentsPutRequestAgent, EdgeConfigGet}
+import arktrio.edge.test.ActorTestBase
+import arktrio.edge.util.{EdgeKamon, ErrorStatus}
 import org.apache.pekko.actor.typed.scaladsl.Behaviors
 
 import scala.collection.mutable

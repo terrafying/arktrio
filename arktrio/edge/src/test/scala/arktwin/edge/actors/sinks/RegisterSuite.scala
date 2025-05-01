@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2024-2025 TOYOTA MOTOR CORPORATION
-package arktwin.edge.actors.sinks
+package arktrio.edge.actors.sinks
 
-import arktwin.center.services.{RegisterAgent, RegisterAgentDeleted, RegisterAgentUpdated}
-import arktwin.edge.actors.sinks.Register.*
-import arktwin.edge.test.ActorTestBase
+import arktrio.center.services.{RegisterAgent, RegisterAgentDeleted, RegisterAgentUpdated}
+import arktrio.edge.actors.sinks.Register.*
+import arktrio.edge.test.ActorTestBase
 
 class RegisterSuite extends ActorTestBase:
   test(Register.getClass.getSimpleName):

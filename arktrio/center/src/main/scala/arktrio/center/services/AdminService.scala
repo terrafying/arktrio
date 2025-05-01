@@ -1,0 +1,19 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2024-2025 TOYOTA MOTOR CORPORATION
+package arktrio.center.services
+
+import arktrio.center.actors.{Clock, Register}
+import com.google.protobuf.empty.Empty
+import org.apache.pekko.actor.typed.ActorRef
+
+import scala.concurrent.Future
+
+class AdminService(clock: ActorRef[Clock.Message], register: ActorRef[Register.Message])
+    extends Admin:
+  override def updateClockSpeed(in: UpdateClockSpeedRequest): Future[Empty] =
+    clock ! Clock.UpdateSpeed(in.clockSpeed)
+    Future.successful(Empty())
+
+  override def deleteAgents(in: AgentSelectorMessage): Future[Empty] =
+    register ! Register.DeleteAgents(in.toAgentSelector)
+    Future.successful(Empty())

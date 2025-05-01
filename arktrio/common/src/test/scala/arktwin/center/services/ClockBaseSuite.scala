@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2024-2025 TOYOTA MOTOR CORPORATION
-package arktwin.center.services
+package arktrio.center.services
 
-import arktwin.center.services.ClockBaseExtensions.*
-import arktwin.common.data.{MachineTag, TaggedTimestamp, VirtualTag}
+import arktrio.center.services.ClockBaseExtensions.*
+import arktrio.common.data.{MachineTag, TaggedTimestamp, VirtualTag}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 

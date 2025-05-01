@@ -1,26 +1,26 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2024-2025 TOYOTA MOTOR CORPORATION
-package arktwin.edge.actors.adapters
+package arktrio.edge.actors.adapters
 
-import arktwin.center.services.ClockBaseExtensions.*
-import arktwin.center.services.{ChartAgent, ClockBase, RegisterAgent}
-import arktwin.common.data.*
-import arktwin.edge.actors.adapters.EdgeNeighborsQueryAdapter.*
-import arktwin.edge.actors.sinks.Chart.CullingAgent
-import arktwin.edge.actors.sinks.{Chart, Clock, Register}
-import arktwin.edge.configs.AxisConfig.Direction.{East, North, Up}
-import arktwin.edge.configs.CoordinateConfig.LengthUnit.Meter
-import arktwin.edge.configs.CoordinateConfig.SpeedUnit.MeterPerSecond
-import arktwin.edge.configs.EulerAnglesConfig.AngleUnit.Degree
-import arktwin.edge.configs.EulerAnglesConfig.RotationMode.Extrinsic
-import arktwin.edge.configs.EulerAnglesConfig.RotationOrder.XYZ
-import arktwin.edge.configs.{AxisConfig, CoordinateConfig, EulerAnglesConfig}
-import arktwin.edge.data.*
-import arktwin.edge.endpoints.EdgeConfigGet
-import arktwin.edge.endpoints.EdgeNeighborsQuery.{Request, Response, ResponseAgent}
-import arktwin.edge.endpoints.NeighborChange.{Recognized, Unrecognized, Updated}
-import arktwin.edge.test.ActorTestBase
-import arktwin.edge.util.{EdgeKamon, ErrorStatus}
+import arktrio.center.services.ClockBaseExtensions.*
+import arktrio.center.services.{ChartAgent, ClockBase, RegisterAgent}
+import arktrio.common.data.*
+import arktrio.edge.actors.adapters.EdgeNeighborsQueryAdapter.*
+import arktrio.edge.actors.sinks.Chart.CullingAgent
+import arktrio.edge.actors.sinks.{Chart, Clock, Register}
+import arktrio.edge.configs.AxisConfig.Direction.{East, North, Up}
+import arktrio.edge.configs.CoordinateConfig.LengthUnit.Meter
+import arktrio.edge.configs.CoordinateConfig.SpeedUnit.MeterPerSecond
+import arktrio.edge.configs.EulerAnglesConfig.AngleUnit.Degree
+import arktrio.edge.configs.EulerAnglesConfig.RotationMode.Extrinsic
+import arktrio.edge.configs.EulerAnglesConfig.RotationOrder.XYZ
+import arktrio.edge.configs.{AxisConfig, CoordinateConfig, EulerAnglesConfig}
+import arktrio.edge.data.*
+import arktrio.edge.endpoints.EdgeConfigGet
+import arktrio.edge.endpoints.EdgeNeighborsQuery.{Request, Response, ResponseAgent}
+import arktrio.edge.endpoints.NeighborChange.{Recognized, Unrecognized, Updated}
+import arktrio.edge.test.ActorTestBase
+import arktrio.edge.util.{EdgeKamon, ErrorStatus}
 import org.apache.pekko.actor.typed.scaladsl.Behaviors
 
 import scala.collection.mutable

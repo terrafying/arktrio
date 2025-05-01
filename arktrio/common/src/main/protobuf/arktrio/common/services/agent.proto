@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package arktrio.common.services.agent;
+
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+option java_package = "arktrio.common.services.agent";
+
+// Agent service definition
+service AgentService {
+  // Register a new agent with the system
+  rpc RegisterAgent(AgentConfig) returns (google.protobuf.Empty);
+
+  // Submit a task to be processed by agents
+  rpc SubmitTask(AgentTask) returns (stream AgentResponse);
+
+  // Get available agents that can handle a task
+  rpc GetAvailableAgents(AgentTask) returns (stream AgentConfig);
+
+  // Stream task responses from agents
+  rpc StreamTaskResponses(AgentTask) returns (stream AgentResponse);
+}
+
+// Agent configuration
+message AgentConfig {
+  string agent_id = 1;
+  repeated AgentCapability capabilities = 2;
+  map<string, string> metadata = 3;
+}
+
+// Agent capabilities
+message AgentCapability {
+  string name = 1;
+  string version = 2;
+  map<string, string> parameters = 3;
+}
+
+// Agent task
+message AgentTask {
+  string task_id = 1;
+  string task_type = 2;
+  bytes payload = 3;
+  map<string, string> parameters = 4;
+}
+
+// Agent response
+message AgentResponse {
+  string task_id = 1;
+  string agent_id = 2;
+  bytes result = 3;
+  map<string, string> metadata = 4;
+} 

@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2024-2025 TOYOTA MOTOR CORPORATION
-package arktwin.edge.actors.sinks
+package arktrio.edge.actors.sinks
 
-import arktwin.center.services.ChartAgent
-import arktwin.common.data.{QuaternionEnu, Timestamp, TransformEnu, Vector3Enu}
-import arktwin.edge.actors.sinks.Chart.*
-import arktwin.edge.configs.CullingConfig
-import arktwin.edge.endpoints.EdgeConfigGet
-import arktwin.edge.test.ActorTestBase
+import arktrio.center.services.ChartAgent
+import arktrio.common.data.{QuaternionEnu, Timestamp, TransformEnu, Vector3Enu}
+import arktrio.edge.actors.sinks.Chart.*
+import arktrio.edge.configs.CullingConfig
+import arktrio.edge.endpoints.EdgeConfigGet
+import arktrio.edge.test.ActorTestBase
 
 class ChartSuite extends ActorTestBase:
   test(Chart.getClass.getSimpleName):

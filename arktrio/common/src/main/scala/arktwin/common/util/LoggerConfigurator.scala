@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2024-2025 TOYOTA MOTOR CORPORATION
-package arktwin.common.util
+package arktrio.common.util
 
-import arktwin.common.util.EnumConfigIdentityReader
+import arktrio.common.util.EnumConfigIdentityReader
 import scribe.format.FormatBlock
 import scribe.format.FormatBlock.Level.PaddedRight
 import scribe.handler.AsynchronousLogHandle

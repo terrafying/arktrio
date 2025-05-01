@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2024-2025 TOYOTA MOTOR CORPORATION
-package arktwin.edge.actors.sinks
+package arktrio.edge.actors.sinks
 
-import arktwin.center.services.ClockBase
-import arktwin.common.data.Timestamp
-import arktwin.edge.actors.sinks.Clock.*
-import arktwin.edge.endpoints.EdgeConfigGet
-import arktwin.edge.test.ActorTestBase
+import arktrio.center.services.ClockBase
+import arktrio.common.data.Timestamp
+import arktrio.edge.actors.sinks.Clock.*
+import arktrio.edge.endpoints.EdgeConfigGet
+import arktrio.edge.test.ActorTestBase
 
 class ClockSuite extends ActorTestBase:
   test(Clock.getClass.getSimpleName):

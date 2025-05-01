@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2024-2025 TOYOTA MOTOR CORPORATION
-package arktwin.center.services
+package arktrio.center.services
 
-import arktwin.common.data.*
-import arktwin.common.data.DurationExtensions.*
-import arktwin.common.data.TimestampExtensions.*
+import arktrio.common.data.*
+import arktrio.common.data.DurationExtensions.*
+import arktrio.common.data.TimestampExtensions.*
 
 object ClockBaseExtensions:
   extension (a: ClockBase)

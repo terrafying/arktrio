@@ -60,14 +60,14 @@ inThisBuild(
 lazy val root = (project in file("."))
   .aggregate(common, center, edge, e2e)
   .settings(
-    name := "arktwin"
+    name := "arktrio"
   )
 
 lazy val common = (project in file("common"))
   .enablePlugins(PekkoGrpcPlugin, AutomateHeaderPlugin)
   .disablePlugins(AssemblyPlugin)
   .settings(
-    name := "arktwin-common",
+    name := "arktrio-common",
     headerLicense := apacheLicenseV2,
     headerMappings := headerMappings.value + (HeaderFileType.scala -> HeaderCommentStyle.cppStyleLineComment),
     libraryDependencies ++= Seq(
@@ -90,8 +90,8 @@ lazy val center = (project in file("center"))
   .dependsOn(common)
   .enablePlugins(BuildInfoPlugin, AutomateHeaderPlugin)
   .settings(
-    name := "arktwin-center",
-    assemblyJarName := "arktwin-center.jar",
+    name := "arktrio-center",
+    assemblyJarName := "arktrio-center.jar",
     assemblyMergeStrategy := {
       case a if a.endsWith(".proto") =>
         MergeStrategy.discard
@@ -130,8 +130,8 @@ lazy val edge = (project in file("edge"))
   .dependsOn(common)
   .enablePlugins(BuildInfoPlugin, AutomateHeaderPlugin)
   .settings(
-    name := "arktwin-edge",
-    assemblyJarName := "arktwin-edge.jar",
+    name := "arktrio-edge",
+    assemblyJarName := "arktrio-edge.jar",
     assemblyMergeStrategy := {
       case a if a.endsWith(".proto") =>
         MergeStrategy.discard
@@ -176,7 +176,7 @@ lazy val edge = (project in file("edge"))
   )
 
 lazy val viewer = (project in file("viewer")).settings(
-  name := "arktwin-viewer",
+  name := "arktrio-viewer",
   Keys.`package` := {
     Process("npm install", baseDirectory.value).!
     Process("npm run build", baseDirectory.value).!
@@ -188,7 +188,7 @@ lazy val viewer = (project in file("viewer")).settings(
 lazy val e2e = (project in file("e2e"))
   .enablePlugins(GatlingPlugin, AutomateHeaderPlugin)
   .settings(
-    name := "arktwin-e2e",
+    name := "arktrio-e2e",
     headerLicense := apacheLicenseV2,
     headerMappings := headerMappings.value + (HeaderFileType.scala -> HeaderCommentStyle.cppStyleLineComment),
     libraryDependencies ++= Seq(

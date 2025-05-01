@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2024-2025 TOYOTA MOTOR CORPORATION
-package arktwin.common.util
+package arktrio.common.util
 
-import arktwin.common.data.{MachineTag, TaggedDuration, TimeTag, VirtualTag}
+import arktrio.common.data.{MachineTag, TaggedDuration, TimeTag, VirtualTag}
 import kamon.Kamon
 import kamon.metric.MeasurementUnit
 import kamon.tag.TagSet
