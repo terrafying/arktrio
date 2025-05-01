@@ -3,289 +3,144 @@
 [![Scala CI](https://github.com/terrafying/arktrio/actions/workflows/scala-ci.yaml/badge.svg?branch=main)](https://github.com/terrafying/arktrio/actions/workflows/scala-ci.yaml)
 [![Scala Steward badge](https://img.shields.io/badge/Scala_Steward-helping-blue.svg?style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAQCAMAAAARSr4IAAAAVFBMVEUAAACHjojlOy5NWlrKzcYRKjGFjIbp293YycuLa3pYY2LSqql4f3pCUFTgSjNodYRmcXUsPD/NTTbjRS+2jomhgnzNc223cGvZS0HaSD0XLjbaSjElhIr+AAAAAXRSTlMAQObYZgAAAHlJREFUCNdNyosOwyAIhWHAQS1Vt7a77/3fcxxdmv0xwmckutAR1nkm4ggbyEcg/wWmlGLDAA3oL50xi6fk5ffZ3E2E3QfZDCcCN2YtbEWZt+Drc6u6rlqv7Uk0LdKqqr5rk2UCRXOk0vmQKGfc94nOJyQjouF9H/wCc9gECEYfONoAAAAASUVORK5CYII=)](https://scala-steward.org)
 
-Arktrio is a distributed messaging framework designed to connect various agent-based software, such as traffic simulators, pedestrian simulators, virtual camera video generators, virtual reality devices, etc.
-Its primary applications are city-scale co-simulations and digital twins.
+Arktrio is a distributed messaging framework designed to connect various agent-based software, with a focus on AI-powered multi-agent systems and semantic mesh networks. It combines the power of Semantic Kernel for AI capabilities with a robust mesh networking infrastructure.
 
-Arktrio consists of two modules: Center and Edge.
+## Core Components
 
-- Arktrio Center is a message broker equipped with network culling for handling a large number of agent transform messages.
-- Arktrio Edge is deployed as a sidecar for each agent-based software. It handles coordinate transformation and time correction, normalizing the spatiotemporal definitions across each simulator.
+### 1. Center (Message Broker)
+- Handles message routing and distribution
+- Implements network culling for large-scale agent communication
+- Manages semantic mesh topology
+- Provides AI service orchestration
 
-The communication protocol between Arktrio Center and Edge is gRPC.
-However, each agent-based software can connect to Arktrio via local REST API provided by Arktrio Edge, without managing stream control directly.
+### 2. Edge (Agent Connector)
+- Deploys as a sidecar for agent-based software
+- Handles coordinate transformation and time synchronization
+- Provides local REST API for agent communication
+- Integrates with Semantic Kernel for local AI processing
 
-## Demo
+### 3. Semantic Mesh
+- Self-organizing network topology
+- Dynamic agent discovery and routing
+- Semantic message routing based on agent capabilities
+- AI-powered message optimization
 
-![](docs/demo.png)
+## Features
+
+### AI Integration
+- Semantic Kernel integration for AI capabilities
+- Multi-agent collaboration and reasoning
+- Dynamic skill discovery and composition
+- Memory and context management
+
+### Mesh Networking
+- Self-distributing mesh topology
+- Dynamic node discovery and routing
+- Message batching and optimization
+- Fault tolerance and recovery
+
+### Agent Communication
+- Type-safe Protocol Buffers communication
+- Streaming responses for real-time updates
+- Capability-based agent matching
+- Context-aware message routing
 
 ## Building
 
 ### Docker
 
 1. `git checkout <release tag>`
-1. `docker build -t arktwin-center -f docker/center.dockerfile .`
-1. `docker build -t arktwin-edge -f docker/edge.dockerfile .`
+1. `docker build -t arktrio-center -f docker/center.dockerfile .`
+1. `docker build -t arktrio-edge -f docker/edge.dockerfile .`
 
 ### JAR
 
-1. install Java Development Kit (recommended: [Eclipse Temurin 21 LTS](https://adoptium.net/temurin/releases/?variant=openjdk21&jvmVariant=hotspot))
-1. install [sbt](https://www.scala-sbt.org/download)
-1. install [Node.js](https://nodejs.org/en/download/package-manager) (recommended: v22)
+1. Install Java Development Kit (recommended: [Eclipse Temurin 21 LTS](https://adoptium.net/temurin/releases/?variant=openjdk21&jvmVariant=hotspot))
+1. Install [sbt](https://www.scala-sbt.org/download)
+1. Install [Node.js](https://nodejs.org/en/download/package-manager) (recommended: v22)
 1. `git checkout <release tag>`
-1. `cd arktwin`
+1. `cd arktrio`
 1. `sbt center/assembly`
-1. pick up `arktwin-center.jar` from `center/target/scala-*.*.*/`
+1. Pick up `arktrio-center.jar` from `center/target/scala-*.*.*/`
 1. `sbt viewer/package edge/assembly`
-1. pick up `arktwin-edge.jar` from `edge/target/scala-*.*.*/`
+1. Pick up `arktrio-edge.jar` from `edge/target/scala-*.*.*/`
 
 ## Running
 
 ### Docker
 
-- `docker run [--network host | -p 2236:2236] [-v $(pwd)/center.conf:/etc/opt/arktrio/center.conf] arktwin-center  [arg]...`
-- `docker run [--network host | -p 2237:2237] [-v $(pwd)/edge.conf:/etc/opt/arktrio/edge.conf] -e ARKTWIN_CENTER_STATIC_HOST=<CENTER_HOST> arktwin-edge`
+- `docker run [--network host | -p 2236:2236] [-v $(pwd)/center.conf:/etc/opt/arktrio/center.conf] arktrio-center [arg]...`
+- `docker run [--network host | -p 2237:2237] [-v $(pwd)/edge.conf:/etc/opt/arktrio/edge.conf] -e ARKTRIO_CENTER_STATIC_HOST=<CENTER_HOST> arktrio-edge`
 
 ### JAR
 
-- `java [-Dconfig.file=center.conf] -XX:+UseZGC -XX:+ZGenerational -jar arktwin-center.jar`
-- `ARKTWIN_CENTER_STATIC_HOST=<CENTER_HOST> java [-Dconfig.file=edge.conf] -XX:+UseZGC -XX:+ZGenerational -jar arktwin-edge.jar [arg]...`
-
-### Edge Optional Command Arguments
-
-Arktrio Edge runs with auxiliary functions when the following optional command arguments are specified.
-
-- `docs`: serve only `/docs/`
-- `generate-openapi-center`: generate the OpenAPI yaml for `/api/center/` to stdout
-- `generate-openapi-center <file>`: generate the OpenAPI yaml file for `/api/center/`
-- `generate-openapi-edge`: generate the OpenAPI yaml for `/api/edge/` to stdout
-- `generate-openapi-edge <file>`: generate the OpenAPI yaml file for `/api/edge/`
-
-### Endpoints
-
-The default endpoints for Arktrio is as follows:
-
-| Module | Role | Endpoint |
-| --- | --- | --- |
-| Arktrio Center | gRPC Server | localhost:2236 |
-| Arktrio Center | Health Check | [localhost:2236/health](http://localhost:2236/health) |
-| Arktrio Center | Prometheus Exporter | [localhost:2236/metrics](http://localhost:2236/metrics) |
-| Arktrio Edge | REST API Server | localhost:2237/api/ |
-| Arktrio Edge | REST Docs | [localhost:2237/docs/](http://localhost:2237/docs/) |
-| Arktrio Edge | Health Check | [localhost:2237/health](http://localhost:2237/health) |
-| Arktrio Edge | Prometheus Exporter | [localhost:2237/metrics](http://localhost:2237/metrics) |
-| Arktrio Edge | Neighbors Viewer | [localhost:2237/viewer/](http://localhost:2237/viewer/) |
-
-If you want to change the host and port settings, see [# Environment Variables](#environment-variables).
-
-## Integrating
-
-- Synchronize the clocks of all machines via NTP (Network Time Protocol)
-- Run an Arktrio Center
-- Run your agent-based software
-- Run an Arktrio Edge as a sidecar of your agent-based software
-- Configure your coordinate system and others in the Arktrio Edge
-```python
-requests.post("http://localhost:2237/api/edge/config/coordinate", json=[
-    "vector3": {"x": "East", "y": "North", "z": "Up", …},
-    "rotation": {"EulerAnglesConfig": {"order": "XYZ", …}}
-])
-```
-- Spawn your agents
-- Register your agents in the Arktrio Edge
-```python
-requests.post("http://localhost:2237/api/edge/agents", json=[
-    {"agentIdPrefix": "alice", "kind": "human", …},
-    {"agentIdPrefix": "bob",   "kind": "human", …}, 
-…])
-```
-- Advance the clock of your agent-based software
-- Update environment informations
-- Simulate movement per agent
-  - Recognize neighbors
-  - Make decision
-  - Move the agent
-- Update transforms and statuses of your agents
-- Send transforms and statuses and others of your agents to the Arktrio Edge
-```python
-requests.put("http://localhost:2237/api/edge/agents", json={
-  "timestamp": {"seconds": 1645536142, "nanos": 0},
-  "transforms": {
-    "alice-1": {"transform": {"localTranslation": {"x": 10, "y":20, "z":0.3}, …}, ...},
-    "bob-a":   {"transform": {"localTranslation": {"x": 40, "y":50, "z":0.6}, …}, ...},
-…}})
-```
-- Receive transforms and statuses of neighbors from the Arktrio Edge 
-```python
-requests.post("http://localhost:2237/api/edge/nighbors/_query", json={
-  "timestamp": {"seconds": 1645536142, "nanos": 0},
-  "neighborsNumber": 100,
-…})
-```
-- Update transforms and statuses of neighbors 
-- Stop the Arktrio Edge
-- Stop your agent-based software
+- `java [-Dconfig.file=center.conf] -XX:+UseZGC -XX:+ZGenerational -jar arktrio-center.jar`
+- `ARKTRIO_CENTER_STATIC_HOST=<CENTER_HOST> java [-Dconfig.file=edge.conf] -XX:+UseZGC -XX:+ZGenerational -jar arktrio-edge.jar [arg]...`
 
 ## Configuration
 
-### Configuration Files
+The framework supports three core components and five operational modes:
 
-The default configuration files of Arktrio are as follows.
+### Core Components
+1. Messaging
+   - Batch processing
+   - Timeout handling
+   - Message routing
 
-- Center
-  - [arktwin/center/src/main/resources/reference.conf](arktwin/center/src/main/resources/reference.conf)
-  - [arktwin/center/src/main/resources/pekko.conf](arktwin/center/src/main/resources/pekko.conf)
-  - [arktwin/center/src/main/resources/kamon.conf](arktwin/center/src/main/resources/kamon.conf)
-- Edge
-  - [arktwin/edge/src/main/resources/reference.conf](arktwin/edge/src/main/resources/reference.conf)
-  - [arktwin/edge/src/main/resources/pekko.conf](arktwin/edge/src/main/resources/pekko.conf)
-  - [arktwin/edge/src/main/resources/kamon.conf](arktwin/edge/src/main/resources/kamon.conf])
+2. Monitoring
+   - Health checks
+   - Performance metrics
+   - Resource usage
 
-Any configuration can be overridden by specifying a file using the Java startup option `-Dconfig.file=path/to/config-file`.
-The syntax of configuration files is [HOCON](https://github.com/lightbend/config/blob/main/HOCON.md) used in [Typesafe Config](https://github.com/lightbend/config).
+3. Persistence
+   - State management
+   - Checkpointing
+   - Recovery
 
-### Coordinate Properties
+### Operational Modes
+1. Development
+   - Debug logging
+   - Local testing
+   - Rapid iteration
 
-The coordinate system for Arktrio Edge can be configured under the path `arktwin.edge.dynamic.coordinate`. According to this configuration, agent-based software can send and receive transform data to and from Arktrio Edge.
+2. Testing
+   - Mock services
+   - Integration testing
+   - Performance testing
 
-| Configuration Path | Type | Default | Description |
-| --- | --- | --- | --- |
-| arktwin.edge.dynamic.coordinate.axis.xDirection | East \| West \| North \| South \| Up \| Down | East | X-axis direction |
-| arktwin.edge.dynamic.coordinate.axis.yDirection | East \| West \| North \| South \| Up \| Down | North | Y-axis direction |
-| arktwin.edge.dynamic.coordinate.axis.zDirection | East \| West \| North \| South \| Up \| Down | Up | Z-axis direction |
-| arktwin.edge.dynamic.coordinate.centerOrigin.x | floating-point number | 0.0 | X-coordinate value of center's origin in the edge's coordinate system |
-| arktwin.edge.dynamic.coordinate.centerOrigin.y | floating-point number | 0.0 | Y-coordinate value of center's origin in the edge's coordinate system |
-| arktwin.edge.dynamic.coordinate.centerOrigin.z | floating-point number | 0.0 | Z-coordinate value of center's origin in the edge's coordinate system |
-| arktwin.edge.dynamic.coordinate.rotation.type | EulerAnglesConfig \| QuaternionConfig | EulerAnglesConfig | Rotation type: euler angles or quaternion |
-| arktwin.edge.dynamic.coordinate.rotation.angleUnit | Degree \| Radian | Degree | Applicable only if type is EulerAnglesConfig<br>angle unit |
-| arktwin.edge.dynamic.coordinate.rotation.rotationMode | Extrinsic \| Intrinsic | Extrinsic | Applicable only if type is EulerAnglesConfig<br>rotation mode: extrinsic rotation (edge's world space rotation) or intrinsic rotation (agent's local space rotation) |
-| arktwin.edge.dynamic.coordinate.rotation.rotationOrder | XYZ \| XZY \| YXZ \| YZX \| ZXY \| ZYX | XYZ | Applicable only if type is EulerAnglesConfig<br>Rotation order: For example, XYZ means rotate around X axis first, then Y axis, and finally Z axis |
-| arktwin.edge.dynamic.coordinate.lengthUnit | Millimeter \| Centimeter \| Meter \| Kilometer | Meter | Length unit |
-| arktwin.edge.dynamic.coordinate.speedUnit | MillimeterPerSecond \| CentimeterPerSecond \| MeterPerSecond \| KilometerPerSecond \| MillimeterPerMinute \| CentimeterPerMinute \| MeterPerMinute \| KilometerPerMinute \| MillimeterPerHour \| CentimeterPerHour \| MeterPerHour \| KilometerPerHour | MeterPerSecond | Speed unit |
+3. Staging
+   - Validation
+   - Pre-production
+   - Load testing
 
-Refer to the following links for the coordinate systems of typical game engines.
+4. Production
+   - Optimization
+   - Monitoring
+   - High availability
 
-- [Rotation and orientation in Unity](https://docs.unity3d.com/Manual/QuaternionAndEulerRotationsInUnity.html)
-- [Units of Measurement in Unreal Engine](https://dev.epicgames.com/documentation/en-us/unreal-engine/units-of-measurement-in-unreal-engine)
+5. Maintenance
+   - Read-only mode
+   - Backup
+   - Updates
 
-### Environment Variables
+## API Reference
 
-Some configuration can be overridden using environment variables.
+### Center API
+- gRPC Server: localhost:2236
+- Health Check: [localhost:2236/health](http://localhost:2236/health)
+- Prometheus Exporter: [localhost:2236/metrics](http://localhost:2236/metrics)
 
-#### Center
-
-| Environment Variable | Configuration Path | Default |
-| --- | --- | --- |
-| ARKTWIN_CENTER_PROMETHEUS_PUSHGATEWAY | kamon.modules.pushgateway-reporter.enabled | false |
-| ARKTWIN_CENTER_PROMETHEUS_PUSHGATEWAY_API_URL | kamon.prometheus.pushgateway.api-url | http://localhost:9091/metrics/job/arktrio-center |
-| ARKTWIN_CENTER_STATIC_HOST | arktwin.center.static.host | 0.0.0.0 |
-| ARKTWIN_CENTER_STATIC_LOG_LEVEL | arktwin.center.static.logLevel | Info |
-| ARKTWIN_CENTER_STATIC_LOG_LEVEL_COLOR | arktwin.center.static.logLevelColor | true |
-| ARKTWIN_CENTER_STATIC_PORT | arktwin.center.static.port | 2236 |
-| ARKTWIN_CENTER_STATIC_PORT_AUTO_INCREMENT | arktwin.center.static.portAutoIncrement | false |
-| ARKTWIN_CENTER_STATIC_PORT_AUTO_INCREMENT_MAX | arktwin.center.static.portAutoIncrementMax | 100 |
-| ARKTWIN_CENTER_STATIC_RUN_ID_PREFIX | arktwin.center.static.runIdPrefix | run |
-
-#### Edge
-
-| Environment Variable | Configuration Path | Default Value |
-| --- | --- | --- |
-| ARKTWIN_CENTER_STATIC_HOST | pekko.grpc.client.arktwin.host | 127.0.0.1 |
-| ARKTWIN_CENTER_STATIC_PORT | pekko.grpc.client.arktwin.port  | 2236 |
-| ARKTWIN_EDGE_GRPC_CLIENT_TLS | pekko.grpc.client.arktwin.use-tls | false |
-| ARKTWIN_EDGE_PROMETHEUS_PUSHGATEWAY | kamon.modules.pushgateway-reporter.enabled | false |
-| ARKTWIN_EDGE_PROMETHEUS_PUSHGATEWAY_API_URL | kamon.prometheus.pushgateway.api-url | http://localhost:9091/metrics/job/arktrio-edge |
-| ARKTWIN_EDGE_STATIC_EDGE_ID_PREFIX | arktwin.edge.static.edgeIdPrefix | edge |
-| ARKTWIN_EDGE_STATIC_HOST | arktwin.edge.static.host | 0.0.0.0 |
-| ARKTWIN_EDGE_STATIC_LOG_LEVEL | arktwin.edge.static.logLevel | Info |
-| ARKTWIN_EDGE_STATIC_LOG_LEVEL_COLOR | arktwin.edge.static.logLevelColor | true |
-| ARKTWIN_EDGE_STATIC_PORT | arktwin.edge.static.port | 2237 |
-| ARKTWIN_EDGE_STATIC_PORT_AUTO_INCREMENT | arktwin.edge.static.portAutoIncrement | true |
-| ARKTWIN_EDGE_STATIC_PORT_AUTO_INCREMENT_MAX | arktwin.edge.static.portAutoIncrementMax | 100 |
-
-## REST API
-
-- https://arktrio.github.io/arktrio/swagger-ui/center/
-- https://arktrio.github.io/arktrio/swagger-ui/edge/
-
-## Metrics for Prometheus
-
-- Chart metrics
-  - arktwin_edge_chart_1_publish_agent_num {edge_id, run_id}
-  - arktwin_edge_chart_1_publish_batch_num {edge_id, run_id}
-  - arktwin_edge_chart_1_publish_from_put_machine_latency {edge_id, run_id}
-  - arktwin_center_chart_2_publish_agent_num {edge_id, run_id}
-  - arktwin_center_chart_2_publish_batch_num {edge_id, run_id}
-  - arktwin_center_chart_2_publish_from_edge_machine_latency {edge_id, run_id}
-  - arktwin_center_chart_3_route_agent_num {edge_id, run_id}
-  - arktwin_center_chart_3_route_batch_num {edge_id, run_id}
-  - arktwin_center_chart_3_route_machine_from_publish_machine_latency {edge_id, run_id}
-  - arktwin_center_chart_4_subscribe_agent_num {edge_id, run_id}
-  - arktwin_center_chart_4_subscribe_batch_num {edge_id, run_id}
-  - arktwin_center_chart_4_subscribe_from_route_machine_latency {edge_id, run_id}
-  - arktwin_edge_chart_5_subscribe_agent_num {edge_id, run_id}
-  - arktwin_edge_chart_5_subscribe_from_center_machine_latency {edge_id, run_id}
-- REST API metrics
-  - arktwin_edge_rest_agent_num {endpoint, edge_id, run_id}
-  - arktwin_edge_rest_request_num {endpoint, edge_id, run_id}
-  - arktwin_edge_rest_process_machine_time {endpoint, edge_id, run_id}
-  - arktwin_edge_rest_virtual_latency {endpoint, edge_id, run_id}
-- Other metrics
-  - arktwin_center_dead_letter_num {recipient, edge_id, run_id}
-  - arktwin_edge_dead_letter_num {recipient, edge_id, run_id}
-
-## Messaging
-
-### Messaging Architecture
-
-![](docs/diagrams/messaging.png)
-
-Gray elements are not implemented.
-
-### Messaging Control
-
-To control messaging, there are following configurations:
-
-- Buffer size of Pekko Streams (e.g., `arktwin.center.static.subscribe-buffer-size`).
-- Mailbox of Pekko Typed Actors (e.g., `pekko.actor.typed.mailbox.arktwin.center.actors.Atlas`).
-
-The default settings for mailboxes are defined by the following rules:
-
-- Actors exchanging transform data use bounded mailboxes. They have strong at-most-once delivery property because transform data is exchanged in large volumes at high frequency.
-- Actors in `arktwin.edge.actors.sinks` use control-aware mailboxes.
-- Others use `org.apache.pekko.dispatch.SingleConsumerOnlyUnboundedMailbox` as the default mailbox for Pekko Typed Actors.
-
-For more details on mailboxes, see [Pekko Mailboxes documentation](https://pekko.apache.org/docs/pekko/current/typed/mailboxes.html).
-
-### Center Culling Algorithm
-
-![](docs/center-culling.png)
-
-## Publications
-
-- Akira Yoshioka, Takatomo Torigoe, Naoki Akiyama, Hideki Fujii, Takashi Machida, Satoru Nakanishi, Takayoshi Yoshimura. Arktrio: Distributed Heterogeneous Multi-Agent Simulation Platform. [Multimedia, Distributed, Cooperative, and Mobile Symposium 2024 (in Japanese)](https://www.dicomo.org/2024/). (awarded first prize at the Noguchi Awards)
+### Edge API
+- REST API Server: localhost:2237/api/
+- REST Docs: [localhost:2237/docs/](http://localhost:2237/docs/)
+- Health Check: [localhost:2237/health](http://localhost:2237/health)
+- Prometheus Exporter: [localhost:2237/metrics](http://localhost:2237/metrics)
+- Neighbors Viewer: [localhost:2237/viewer/](http://localhost:2237/viewer/)
 
 ## Contributing
 
-Pull requests for bug fixes and feature development are very welcome.
-Your contributions are more acceptable if you start a conversation in [Discussions](https://github.com/terrafying/arktrio/discussions) or [Issues](https://github.com/terrafying/arktrio/issues).
-
-We are especially interested in your ideas and examples for using Arktrio.
-Please feel free to share them in [Show and tell](https://github.com/terrafying/arktrio/discussions/categories/show-and-tell).
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
 ## License
 
-Arktrio source code is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0), Copyright 2024-2025 TOYOTA MOTOR CORPORATION.
-
-If you need license lists for libraries that Arktrio Center or Edge depends on, follow these steps:
-
-- Arktrio Center
-  1. `cd arktwin`
-  1. `sbt center/dumpLicenseReport`
-  1. Check generated files in `center/target/license-reports`
-- Arktrio Edge
-  1. `cd arktwin`
-  1. `sbt edge/dumpLicenseReport`
-  1. Check generated files in `edge/target/license-reports`
-- Arktrio Edge Neighbors viewer
-  1. `cd arktwin/viewer`
-  1. `npm run license-check`
+This project is licensed under the terms of the license included in the repository.

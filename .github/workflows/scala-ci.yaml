@@ -19,33 +19,33 @@ jobs:
           java-version: 21
           distribution: temurin
           cache: sbt
-          cache-dependency-path: arktwin/build.sbt
+          cache-dependency-path: arktrio/build.sbt
       
       - uses: sbt/setup-sbt@v1
 
       # check before automatic execution at compile time
       - name: sbt scalafixAll --check
-        working-directory: arktwin
+        working-directory: arktrio
         run: |
           git restore .
           sbt "scalafixAll --check"
 
       # check before automatic execution at compile time
       - name: sbt scalafmtCheckAll
-        working-directory: arktwin
+        working-directory: arktrio
         run: |
           git restore .
           sbt scalafmtCheckAll
 
       # check before automatic execution at compile time
       - name: sbt headerCheck
-        working-directory: arktwin
+        working-directory: arktrio
         run: |
           git restore .
           sbt center/headerCheck center/Test/headerCheck common/headerCheck common/Test/headerCheck e2e/Test/headerCheck edge/headerCheck edge/Test/headerCheck
 
       - name: sbt test
-        working-directory: arktwin
+        working-directory: arktrio
         run: sbt test
 
   e2e-tests:
@@ -58,28 +58,28 @@ jobs:
           java-version: 21
           distribution: temurin
           cache: sbt
-          cache-dependency-path: arktwin/build.sbt
+          cache-dependency-path: arktrio/build.sbt
 
       - uses: sbt/setup-sbt@v1
 
       - name: sbt compile
-        working-directory: arktwin
+        working-directory: arktrio
         run: sbt compile
 
       - name: sbt center/run in the background
-        working-directory: arktwin
+        working-directory: arktrio
         run: |
           nohup sbt center/run &
           curl --retry 180 --retry-delay 1 --retry-all-errors http://localhost:2236/health
 
       - name: sbt edge/run in the background
-        working-directory: arktwin
+        working-directory: arktrio
         run: |
           nohup sbt edge/run &
           curl --retry 180 --retry-delay 1 --retry-all-errors http://localhost:2237/health
 
       - name: sbt e2e/Gatling/test
-        working-directory: arktwin
+        working-directory: arktrio
         run: sbt e2e/Gatling/test
 
   license-check:
@@ -92,16 +92,16 @@ jobs:
           java-version: 21
           distribution: temurin
           cache: sbt
-          cache-dependency-path: arktwin/build.sbt
+          cache-dependency-path: arktrio/build.sbt
 
       - uses: sbt/setup-sbt@v1
 
       - name: sbt center/licenseCheck
-        working-directory: arktwin
+        working-directory: arktrio
         run: sbt center/licenseCheck
 
       - name: sbt edge/licenseCheck
-        working-directory: arktwin
+        working-directory: arktrio
         run: sbt edge/licenseCheck
 
   changelogs:
@@ -116,12 +116,12 @@ jobs:
           java-version: 21
           distribution: temurin
           cache: sbt
-          cache-dependency-path: arktwin/build.sbt
+          cache-dependency-path: arktrio/build.sbt
 
       - uses: sbt/setup-sbt@v1
 
       - name: Generate OpenAPI YAML files
-        working-directory: arktwin
+        working-directory: arktrio
         run: |
           sbt "edge/run generate-openapi-center ../temp/arktrio-center-head.yaml" "edge/run generate-openapi-edge ../temp/arktrio-edge-head.yaml"
           git restore .
@@ -134,42 +134,42 @@ jobs:
       - name: Generate /api/center changelog from main
         uses: oasdiff/oasdiff-action/changelog@v0.0.21
         with:
-          base: arktwin/temp/arktrio-center-main.yaml
-          revision: arktwin/temp/arktrio-center-head.yaml
-          output-to-file: arktwin/temp/arktrio-center-changelog-from-main.txt
+          base: arktrio/temp/arktrio-center-main.yaml
+          revision: arktrio/temp/arktrio-center-head.yaml
+          output-to-file: arktrio/temp/arktrio-center-changelog-from-main.txt
 
       - name: Generate /api/edge changelog from main
         uses: oasdiff/oasdiff-action/changelog@v0.0.21
         with:
-          base: arktwin/temp/arktrio-edge-main.yaml
-          revision: arktwin/temp/arktrio-edge-head.yaml
-          output-to-file: arktwin/temp/arktrio-edge-changelog-from-main.txt
+          base: arktrio/temp/arktrio-edge-main.yaml
+          revision: arktrio/temp/arktrio-edge-head.yaml
+          output-to-file: arktrio/temp/arktrio-edge-changelog-from-main.txt
 
       - name: Generate /api/center changelog from latest relase
         uses: oasdiff/oasdiff-action/changelog@v0.0.21
         with:
-          base: arktwin/temp/arktrio-center-release.yaml
-          revision: arktwin/temp/arktrio-center-head.yaml
-          output-to-file: arktwin/temp/arktrio-center-changelog-from-release.txt
+          base: arktrio/temp/arktrio-center-release.yaml
+          revision: arktrio/temp/arktrio-center-head.yaml
+          output-to-file: arktrio/temp/arktrio-center-changelog-from-release.txt
 
       - name: Generate /api/edge changelog from latest relase
         uses: oasdiff/oasdiff-action/changelog@v0.0.21
         with:
-          base: arktwin/temp/arktrio-edge-release.yaml
-          revision: arktwin/temp/arktrio-edge-head.yaml
-          output-to-file: arktwin/temp/arktrio-edge-changelog-from-release.txt
+          base: arktrio/temp/arktrio-edge-release.yaml
+          revision: arktrio/temp/arktrio-edge-head.yaml
+          output-to-file: arktrio/temp/arktrio-edge-changelog-from-release.txt
 
       - name: Display /api/center changelog from main
-        run: cat arktwin/temp/arktrio-center-changelog-from-main.txt
+        run: cat arktrio/temp/arktrio-center-changelog-from-main.txt
 
       - name: Display /api/edge changelog from main
-        run: cat arktwin/temp/arktrio-edge-changelog-from-main.txt
+        run: cat arktrio/temp/arktrio-edge-changelog-from-main.txt
 
       - name: Display /api/center changelog from latest release
-        run: cat arktwin/temp/arktrio-center-changelog-from-release.txt
+        run: cat arktrio/temp/arktrio-center-changelog-from-release.txt
 
       - name: Display /api/edge changelog from latest release
-        run: cat arktwin/temp/arktrio-edge-changelog-from-release.txt
+        run: cat arktrio/temp/arktrio-edge-changelog-from-release.txt
 
   docker-build:
     runs-on: ubuntu-latest
@@ -177,11 +177,11 @@ jobs:
       - uses: docker/build-push-action@v6
         with:
           file: docker/center.dockerfile
-          tags: arktwin-center
+          tags: arktrio-center
           push: false
 
       - uses: docker/build-push-action@v6
         with:
           file: docker/edge.dockerfile
-          tags: arktwin-edge
+          tags: arktrio-edge
           push: false
