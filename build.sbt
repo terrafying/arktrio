@@ -8,7 +8,7 @@ lazy val root = project
   .in(file("."))
   .settings(
     name := "arktrio-mesh",
-    version := "0.1.0",
+    version := "0.3.5.0",
     scalaVersion := "3.3.3",
     libraryDependencies ++= Seq(
       // Core dependencies
