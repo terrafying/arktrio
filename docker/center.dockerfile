@@ -11,8 +11,8 @@ FROM sbtscala/scala-sbt:eclipse-temurin-21.0.6_7_1.10.10_3.6.4 AS jar-build
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh && \
     bash nodesource_setup.sh && \
     apt-get install -y nodejs
-WORKDIR /arktwin/
-COPY arktwin/ /arktwin/
+WORKDIR /arktrio/
+COPY arktwin/ /arktrio/
 RUN sbt center/assembly
 
 FROM debian:bookworm-slim
@@ -22,9 +22,9 @@ RUN apt-get update && \
     apt-get install -y curl jq && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-RUN mkdir /opt/arktwin/ && \
-    mkdir /etc/opt/arktwin/ && \
-    touch /etc/opt/arktwin/center.conf
+RUN mkdir /opt/arktrio/ && \
+    mkdir /etc/opt/arktrio/ && \
+    touch /etc/opt/arktrio/center.conf
 COPY --from=jre-build /javaruntime $JAVA_HOME
-COPY --from=jar-build /arktwin/center/target/scala-3.6.4/arktwin-center.jar /opt/arktwin/arktwin-center.jar
-ENTRYPOINT ["java", "-Dconfig.file=/etc/opt/arktwin/center.conf", "-XX:MaxRAMPercentage=75", "-XX:+UseZGC", "-XX:+ZGenerational", "-jar", "/opt/arktwin/arktwin-center.jar"]
+COPY --from=jar-build /arktrio/center/target/scala-3.6.4/arktrio-center.jar /opt/terrafying/arktrio-center.jar
+ENTRYPOINT ["java", "-Dconfig.file=/etc/opt/arktrio/center.conf", "-XX:MaxRAMPercentage=75", "-XX:+UseZGC", "-XX:+ZGenerational", "-jar", "/opt/terrafying/arktrio-center.jar"]

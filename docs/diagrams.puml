@@ -2,7 +2,7 @@
 skinparam defaultTextAlignment center
 
 frame "Remote Network" {
-  node "ArkTwin Center" {
+  node "Arktrio Center" {
     agent "<color:#gray>Conductor</color>" as Conductor
 
     agent "Atlas" as Atlas
@@ -37,7 +37,7 @@ frame "Remote Network" {
 }
 
 frame "Local Network<plain>, which can deny inbound connections</plain>" {
-  node "ArkTwin Edge" {
+  node "Arktrio Edge" {
     rectangle "gRPC Clients" as edge.clients {
       interface "Admin" as AdminClient
       interface "Chart" as ChartClient

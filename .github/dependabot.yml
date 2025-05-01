@@ -9,7 +9,7 @@ updates:
     open-pull-requests-limit: 10
 
   - package-ecosystem: "npm"
-    directory: "/arktwin/viewer/"
+    directory: "/arktrio/viewer/"
     schedule:
       interval: "monthly"
     labels:

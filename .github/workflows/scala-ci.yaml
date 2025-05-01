@@ -123,53 +123,53 @@ jobs:
       - name: Generate OpenAPI YAML files
         working-directory: arktwin
         run: |
-          sbt "edge/run generate-openapi-center ../temp/arktwin-center-head.yaml" "edge/run generate-openapi-edge ../temp/arktwin-edge-head.yaml"
+          sbt "edge/run generate-openapi-center ../temp/arktrio-center-head.yaml" "edge/run generate-openapi-edge ../temp/arktrio-edge-head.yaml"
           git restore .
           git switch main
-          sbt clean "edge/run generate-openapi-center ../temp/arktwin-center-main.yaml" "edge/run generate-openapi-edge ../temp/arktwin-edge-main.yaml"
+          sbt clean "edge/run generate-openapi-center ../temp/arktrio-center-main.yaml" "edge/run generate-openapi-edge ../temp/arktrio-edge-main.yaml"
           git restore .
           git switch --detach $(git tag -l "v*" --sort=-v:refname | head -n 1)
-          sbt clean "edge/run generate-openapi-center ../temp/arktwin-center-release.yaml" "edge/run generate-openapi-edge ../temp/arktwin-edge-release.yaml"
+          sbt clean "edge/run generate-openapi-center ../temp/arktrio-center-release.yaml" "edge/run generate-openapi-edge ../temp/arktrio-edge-release.yaml"
 
       - name: Generate /api/center changelog from main
         uses: oasdiff/oasdiff-action/changelog@v0.0.21
         with:
-          base: arktwin/temp/arktwin-center-main.yaml
-          revision: arktwin/temp/arktwin-center-head.yaml
-          output-to-file: arktwin/temp/arktwin-center-changelog-from-main.txt
+          base: arktwin/temp/arktrio-center-main.yaml
+          revision: arktwin/temp/arktrio-center-head.yaml
+          output-to-file: arktwin/temp/arktrio-center-changelog-from-main.txt
 
       - name: Generate /api/edge changelog from main
         uses: oasdiff/oasdiff-action/changelog@v0.0.21
         with:
-          base: arktwin/temp/arktwin-edge-main.yaml
-          revision: arktwin/temp/arktwin-edge-head.yaml
-          output-to-file: arktwin/temp/arktwin-edge-changelog-from-main.txt
+          base: arktwin/temp/arktrio-edge-main.yaml
+          revision: arktwin/temp/arktrio-edge-head.yaml
+          output-to-file: arktwin/temp/arktrio-edge-changelog-from-main.txt
 
       - name: Generate /api/center changelog from latest relase
         uses: oasdiff/oasdiff-action/changelog@v0.0.21
         with:
-          base: arktwin/temp/arktwin-center-release.yaml
-          revision: arktwin/temp/arktwin-center-head.yaml
-          output-to-file: arktwin/temp/arktwin-center-changelog-from-release.txt
+          base: arktwin/temp/arktrio-center-release.yaml
+          revision: arktwin/temp/arktrio-center-head.yaml
+          output-to-file: arktwin/temp/arktrio-center-changelog-from-release.txt
 
       - name: Generate /api/edge changelog from latest relase
         uses: oasdiff/oasdiff-action/changelog@v0.0.21
         with:
-          base: arktwin/temp/arktwin-edge-release.yaml
-          revision: arktwin/temp/arktwin-edge-head.yaml
-          output-to-file: arktwin/temp/arktwin-edge-changelog-from-release.txt
+          base: arktwin/temp/arktrio-edge-release.yaml
+          revision: arktwin/temp/arktrio-edge-head.yaml
+          output-to-file: arktwin/temp/arktrio-edge-changelog-from-release.txt
 
       - name: Display /api/center changelog from main
-        run: cat arktwin/temp/arktwin-center-changelog-from-main.txt
+        run: cat arktwin/temp/arktrio-center-changelog-from-main.txt
 
       - name: Display /api/edge changelog from main
-        run: cat arktwin/temp/arktwin-edge-changelog-from-main.txt
+        run: cat arktwin/temp/arktrio-edge-changelog-from-main.txt
 
       - name: Display /api/center changelog from latest release
-        run: cat arktwin/temp/arktwin-center-changelog-from-release.txt
+        run: cat arktwin/temp/arktrio-center-changelog-from-release.txt
 
       - name: Display /api/edge changelog from latest release
-        run: cat arktwin/temp/arktwin-edge-changelog-from-release.txt
+        run: cat arktwin/temp/arktrio-edge-changelog-from-release.txt
 
   docker-build:
     runs-on: ubuntu-latest

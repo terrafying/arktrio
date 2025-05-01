@@ -33,13 +33,13 @@ jobs:
           java-version: 21
           distribution: temurin
           cache: sbt
-          cache-dependency-path: arktwin/arktwin/build.sbt
+          cache-dependency-path: terrafying/arktrio/build.sbt
 
       - uses: sbt/setup-sbt@v1
 
       - name: Generate OpenAPI YAML files
-        working-directory: arktwin/arktwin
-        run: sbt "edge/run generate-openapi-center ../../pages/dist/swagger-ui/center/arktwin-center.yaml" "edge/run generate-openapi-edge ../../pages/dist/swagger-ui/edge/arktwin-edge.yaml"
+        working-directory: terrafying/arktrio
+        run: sbt "edge/run generate-openapi-center ../../pages/dist/swagger-ui/center/arktrio-center.yaml" "edge/run generate-openapi-edge ../../pages/dist/swagger-ui/edge/arktrio-edge.yaml"
 
       - uses: actions/checkout@v4
         with:

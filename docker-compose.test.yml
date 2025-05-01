@@ -1,0 +1,117 @@
+version: '3.8'
+
+services:
+  arktrio-center:
+    build:
+      context: .
+      dockerfile: docker/center.dockerfile
+    ports:
+      - "2236:2236"
+    environment:
+      - ARKTRIO_CENTER_STATIC_HOST=0.0.0.0
+      - ARKTRIO_CENTER_STATIC_PORT=2236
+      - ARKTRIO_CENTER_STATIC_LOG_LEVEL=Info
+      - ARKTRIO_CENTER_STATIC_LOG_LEVEL_COLOR=true
+    volumes:
+      - ./center.conf:/etc/opt/arktrio/center.conf
+    networks:
+      - arktrio-network
+
+  arktrio-edge-1:
+    build:
+      context: .
+      dockerfile: docker/edge.dockerfile
+    ports:
+      - "2237:2237"
+    environment:
+      - ARKTRIO_CENTER_STATIC_HOST=arktrio-center
+      - ARKTRIO_CENTER_STATIC_PORT=2236
+      - ARKTRIO_EDGE_STATIC_HOST=0.0.0.0
+      - ARKTRIO_EDGE_STATIC_PORT=2237
+      - ARKTRIO_EDGE_STATIC_LOG_LEVEL=Info
+      - ARKTRIO_EDGE_STATIC_LOG_LEVEL_COLOR=true
+    volumes:
+      - ./edge.conf:/etc/opt/arktrio/edge.conf
+    networks:
+      - arktrio-network
+    depends_on:
+      - arktrio-center
+
+  arktrio-edge-2:
+    build:
+      context: .
+      dockerfile: docker/edge.dockerfile
+    ports:
+      - "2238:2237"
+    environment:
+      - ARKTRIO_CENTER_STATIC_HOST=arktrio-center
+      - ARKTRIO_CENTER_STATIC_PORT=2236
+      - ARKTRIO_EDGE_STATIC_HOST=0.0.0.0
+      - ARKTRIO_EDGE_STATIC_PORT=2237
+      - ARKTRIO_EDGE_STATIC_LOG_LEVEL=Info
+      - ARKTRIO_EDGE_STATIC_LOG_LEVEL_COLOR=true
+    volumes:
+      - ./edge.conf:/etc/opt/arktrio/edge.conf
+    networks:
+      - arktrio-network
+    depends_on:
+      - arktrio-center
+
+  arktrio-edge-3:
+    build:
+      context: .
+      dockerfile: docker/edge.dockerfile
+    ports:
+      - "2239:2237"
+    environment:
+      - ARKTRIO_CENTER_STATIC_HOST=arktrio-center
+      - ARKTRIO_CENTER_STATIC_PORT=2236
+      - ARKTRIO_EDGE_STATIC_HOST=0.0.0.0
+      - ARKTRIO_EDGE_STATIC_PORT=2237
+      - ARKTRIO_EDGE_STATIC_LOG_LEVEL=Info
+      - ARKTRIO_EDGE_STATIC_LOG_LEVEL_COLOR=true
+    volumes:
+      - ./edge.conf:/etc/opt/arktrio/edge.conf
+    networks:
+      - arktrio-network
+    depends_on:
+      - arktrio-center
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.test.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - test-network
+
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - test-network
+
+  test-runner:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.test
+    volumes:
+      - ./tests:/app/tests
+      - ./scripts:/app/scripts
+    environment:
+      - PYTHONPATH=/app
+    networks:
+      - test-network
+
+networks:
+  arktrio-network:
+    driver: bridge
+  test-network:
+    driver: bridge 

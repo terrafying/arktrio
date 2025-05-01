@@ -1,6 +1,6 @@
 # Contributor License Agreement
 
-Thank you for your interest in contributing to ArkTwin ("We" or "Us").
+Thank you for your interest in contributing to Arktrio ("We" or "Us").
 
 The purpose of this contributor agreement ("Agreement") is to clarify and document the rights granted by contributors to Us. 
 

@@ -11,8 +11,8 @@ FROM sbtscala/scala-sbt:eclipse-temurin-21.0.6_7_1.10.10_3.6.4 AS jar-build
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh && \
     bash nodesource_setup.sh && \
     apt-get install -y nodejs
-WORKDIR /arktwin/
-COPY arktwin/ /arktwin/
+WORKDIR /arktrio/
+COPY arktwin/ /arktrio/
 RUN sbt viewer/package edge/assembly
 
 FROM debian:bookworm-slim
@@ -22,10 +22,10 @@ RUN apt-get update && \
     apt-get install -y curl jq && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-RUN mkdir /opt/arktwin/ && \
-    mkdir /etc/opt/arktwin/ && \
-    touch /etc/opt/arktwin/edge.conf
+RUN mkdir /opt/arktrio/ && \
+    mkdir /etc/opt/arktrio/ && \
+    touch /etc/opt/arktrio/edge.conf
 COPY --from=jre-build /javaruntime $JAVA_HOME
-COPY --from=jar-build /arktwin/edge/target/scala-3.6.4/arktwin-edge.jar /opt/arktwin/arktwin-edge.jar
-COPY docker/edge.sh /opt/arktwin/entrypoint.sh
-ENTRYPOINT ["/opt/arktwin/entrypoint.sh"]
+COPY --from=jar-build /arktrio/edge/target/scala-3.6.4/arktrio-edge.jar /opt/terrafying/arktrio-edge.jar
+COPY docker/edge.sh /opt/arktrio/entrypoint.sh
+ENTRYPOINT ["/opt/arktrio/entrypoint.sh"]

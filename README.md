@@ -1,18 +1,18 @@
-# ArkTwin: Distributed Multi-Agent Messaging Framework
+# Arktrio: Distributed Multi-Agent Messaging Framework
 
-[![Scala CI](https://github.com/arktwin/arktwin/actions/workflows/scala-ci.yaml/badge.svg?branch=main)](https://github.com/arktwin/arktwin/actions/workflows/scala-ci.yaml)
+[![Scala CI](https://github.com/terrafying/arktrio/actions/workflows/scala-ci.yaml/badge.svg?branch=main)](https://github.com/terrafying/arktrio/actions/workflows/scala-ci.yaml)
 [![Scala Steward badge](https://img.shields.io/badge/Scala_Steward-helping-blue.svg?style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAQCAMAAAARSr4IAAAAVFBMVEUAAACHjojlOy5NWlrKzcYRKjGFjIbp293YycuLa3pYY2LSqql4f3pCUFTgSjNodYRmcXUsPD/NTTbjRS+2jomhgnzNc223cGvZS0HaSD0XLjbaSjElhIr+AAAAAXRSTlMAQObYZgAAAHlJREFUCNdNyosOwyAIhWHAQS1Vt7a77/3fcxxdmv0xwmckutAR1nkm4ggbyEcg/wWmlGLDAA3oL50xi6fk5ffZ3E2E3QfZDCcCN2YtbEWZt+Drc6u6rlqv7Uk0LdKqqr5rk2UCRXOk0vmQKGfc94nOJyQjouF9H/wCc9gECEYfONoAAAAASUVORK5CYII=)](https://scala-steward.org)
 
-ArkTwin is a distributed messaging framework designed to connect various agent-based software, such as traffic simulators, pedestrian simulators, virtual camera video generators, virtual reality devices, etc.
+Arktrio is a distributed messaging framework designed to connect various agent-based software, such as traffic simulators, pedestrian simulators, virtual camera video generators, virtual reality devices, etc.
 Its primary applications are city-scale co-simulations and digital twins.
 
-ArkTwin consists of two modules: Center and Edge.
+Arktrio consists of two modules: Center and Edge.
 
-- ArkTwin Center is a message broker equipped with network culling for handling a large number of agent transform messages.
-- ArkTwin Edge is deployed as a sidecar for each agent-based software. It handles coordinate transformation and time correction, normalizing the spatiotemporal definitions across each simulator.
+- Arktrio Center is a message broker equipped with network culling for handling a large number of agent transform messages.
+- Arktrio Edge is deployed as a sidecar for each agent-based software. It handles coordinate transformation and time correction, normalizing the spatiotemporal definitions across each simulator.
 
-The communication protocol between ArkTwin Center and Edge is gRPC.
-However, each agent-based software can connect to ArkTwin via local REST API provided by ArkTwin Edge, without managing stream control directly.
+The communication protocol between Arktrio Center and Edge is gRPC.
+However, each agent-based software can connect to Arktrio via local REST API provided by Arktrio Edge, without managing stream control directly.
 
 ## Demo
 
@@ -42,8 +42,8 @@ However, each agent-based software can connect to ArkTwin via local REST API pro
 
 ### Docker
 
-- `docker run [--network host | -p 2236:2236] [-v $(pwd)/center.conf:/etc/opt/arktwin/center.conf] arktwin-center  [arg]...`
-- `docker run [--network host | -p 2237:2237] [-v $(pwd)/edge.conf:/etc/opt/arktwin/edge.conf] -e ARKTWIN_CENTER_STATIC_HOST=<CENTER_HOST> arktwin-edge`
+- `docker run [--network host | -p 2236:2236] [-v $(pwd)/center.conf:/etc/opt/arktrio/center.conf] arktwin-center  [arg]...`
+- `docker run [--network host | -p 2237:2237] [-v $(pwd)/edge.conf:/etc/opt/arktrio/edge.conf] -e ARKTWIN_CENTER_STATIC_HOST=<CENTER_HOST> arktwin-edge`
 
 ### JAR
 
@@ -52,7 +52,7 @@ However, each agent-based software can connect to ArkTwin via local REST API pro
 
 ### Edge Optional Command Arguments
 
-ArkTwin Edge runs with auxiliary functions when the following optional command arguments are specified.
+Arktrio Edge runs with auxiliary functions when the following optional command arguments are specified.
 
 - `docs`: serve only `/docs/`
 - `generate-openapi-center`: generate the OpenAPI yaml for `/api/center/` to stdout
@@ -62,28 +62,28 @@ ArkTwin Edge runs with auxiliary functions when the following optional command a
 
 ### Endpoints
 
-The default endpoints for ArkTwin is as follows:
+The default endpoints for Arktrio is as follows:
 
 | Module | Role | Endpoint |
 | --- | --- | --- |
-| ArkTwin Center | gRPC Server | localhost:2236 |
-| ArkTwin Center | Health Check | [localhost:2236/health](http://localhost:2236/health) |
-| ArkTwin Center | Prometheus Exporter | [localhost:2236/metrics](http://localhost:2236/metrics) |
-| ArkTwin Edge | REST API Server | localhost:2237/api/ |
-| ArkTwin Edge | REST Docs | [localhost:2237/docs/](http://localhost:2237/docs/) |
-| ArkTwin Edge | Health Check | [localhost:2237/health](http://localhost:2237/health) |
-| ArkTwin Edge | Prometheus Exporter | [localhost:2237/metrics](http://localhost:2237/metrics) |
-| ArkTwin Edge | Neighbors Viewer | [localhost:2237/viewer/](http://localhost:2237/viewer/) |
+| Arktrio Center | gRPC Server | localhost:2236 |
+| Arktrio Center | Health Check | [localhost:2236/health](http://localhost:2236/health) |
+| Arktrio Center | Prometheus Exporter | [localhost:2236/metrics](http://localhost:2236/metrics) |
+| Arktrio Edge | REST API Server | localhost:2237/api/ |
+| Arktrio Edge | REST Docs | [localhost:2237/docs/](http://localhost:2237/docs/) |
+| Arktrio Edge | Health Check | [localhost:2237/health](http://localhost:2237/health) |
+| Arktrio Edge | Prometheus Exporter | [localhost:2237/metrics](http://localhost:2237/metrics) |
+| Arktrio Edge | Neighbors Viewer | [localhost:2237/viewer/](http://localhost:2237/viewer/) |
 
 If you want to change the host and port settings, see [# Environment Variables](#environment-variables).
 
 ## Integrating
 
 - Synchronize the clocks of all machines via NTP (Network Time Protocol)
-- Run an ArkTwin Center
+- Run an Arktrio Center
 - Run your agent-based software
-- Run an ArkTwin Edge as a sidecar of your agent-based software
-- Configure your coordinate system and others in the ArkTwin Edge
+- Run an Arktrio Edge as a sidecar of your agent-based software
+- Configure your coordinate system and others in the Arktrio Edge
 ```python
 requests.post("http://localhost:2237/api/edge/config/coordinate", json=[
     "vector3": {"x": "East", "y": "North", "z": "Up", …},
@@ -91,7 +91,7 @@ requests.post("http://localhost:2237/api/edge/config/coordinate", json=[
 ])
 ```
 - Spawn your agents
-- Register your agents in the ArkTwin Edge
+- Register your agents in the Arktrio Edge
 ```python
 requests.post("http://localhost:2237/api/edge/agents", json=[
     {"agentIdPrefix": "alice", "kind": "human", …},
@@ -105,7 +105,7 @@ requests.post("http://localhost:2237/api/edge/agents", json=[
   - Make decision
   - Move the agent
 - Update transforms and statuses of your agents
-- Send transforms and statuses and others of your agents to the ArkTwin Edge
+- Send transforms and statuses and others of your agents to the Arktrio Edge
 ```python
 requests.put("http://localhost:2237/api/edge/agents", json={
   "timestamp": {"seconds": 1645536142, "nanos": 0},
@@ -114,7 +114,7 @@ requests.put("http://localhost:2237/api/edge/agents", json={
     "bob-a":   {"transform": {"localTranslation": {"x": 40, "y":50, "z":0.6}, …}, ...},
 …}})
 ```
-- Receive transforms and statuses of neighbors from the ArkTwin Edge 
+- Receive transforms and statuses of neighbors from the Arktrio Edge 
 ```python
 requests.post("http://localhost:2237/api/edge/nighbors/_query", json={
   "timestamp": {"seconds": 1645536142, "nanos": 0},
@@ -122,14 +122,14 @@ requests.post("http://localhost:2237/api/edge/nighbors/_query", json={
 …})
 ```
 - Update transforms and statuses of neighbors 
-- Stop the ArkTwin Edge
+- Stop the Arktrio Edge
 - Stop your agent-based software
 
 ## Configuration
 
 ### Configuration Files
 
-The default configuration files of ArkTwin are as follows.
+The default configuration files of Arktrio are as follows.
 
 - Center
   - [arktwin/center/src/main/resources/reference.conf](arktwin/center/src/main/resources/reference.conf)
@@ -145,7 +145,7 @@ The syntax of configuration files is [HOCON](https://github.com/lightbend/config
 
 ### Coordinate Properties
 
-The coordinate system for ArkTwin Edge can be configured under the path `arktwin.edge.dynamic.coordinate`. According to this configuration, agent-based software can send and receive transform data to and from ArkTwin Edge.
+The coordinate system for Arktrio Edge can be configured under the path `arktwin.edge.dynamic.coordinate`. According to this configuration, agent-based software can send and receive transform data to and from Arktrio Edge.
 
 | Configuration Path | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -176,7 +176,7 @@ Some configuration can be overridden using environment variables.
 | Environment Variable | Configuration Path | Default |
 | --- | --- | --- |
 | ARKTWIN_CENTER_PROMETHEUS_PUSHGATEWAY | kamon.modules.pushgateway-reporter.enabled | false |
-| ARKTWIN_CENTER_PROMETHEUS_PUSHGATEWAY_API_URL | kamon.prometheus.pushgateway.api-url | http://localhost:9091/metrics/job/arktwin-center |
+| ARKTWIN_CENTER_PROMETHEUS_PUSHGATEWAY_API_URL | kamon.prometheus.pushgateway.api-url | http://localhost:9091/metrics/job/arktrio-center |
 | ARKTWIN_CENTER_STATIC_HOST | arktwin.center.static.host | 0.0.0.0 |
 | ARKTWIN_CENTER_STATIC_LOG_LEVEL | arktwin.center.static.logLevel | Info |
 | ARKTWIN_CENTER_STATIC_LOG_LEVEL_COLOR | arktwin.center.static.logLevelColor | true |
@@ -193,7 +193,7 @@ Some configuration can be overridden using environment variables.
 | ARKTWIN_CENTER_STATIC_PORT | pekko.grpc.client.arktwin.port  | 2236 |
 | ARKTWIN_EDGE_GRPC_CLIENT_TLS | pekko.grpc.client.arktwin.use-tls | false |
 | ARKTWIN_EDGE_PROMETHEUS_PUSHGATEWAY | kamon.modules.pushgateway-reporter.enabled | false |
-| ARKTWIN_EDGE_PROMETHEUS_PUSHGATEWAY_API_URL | kamon.prometheus.pushgateway.api-url | http://localhost:9091/metrics/job/arktwin-edge |
+| ARKTWIN_EDGE_PROMETHEUS_PUSHGATEWAY_API_URL | kamon.prometheus.pushgateway.api-url | http://localhost:9091/metrics/job/arktrio-edge |
 | ARKTWIN_EDGE_STATIC_EDGE_ID_PREFIX | arktwin.edge.static.edgeIdPrefix | edge |
 | ARKTWIN_EDGE_STATIC_HOST | arktwin.edge.static.host | 0.0.0.0 |
 | ARKTWIN_EDGE_STATIC_LOG_LEVEL | arktwin.edge.static.logLevel | Info |
@@ -204,8 +204,8 @@ Some configuration can be overridden using environment variables.
 
 ## REST API
 
-- https://arktwin.github.io/arktwin/swagger-ui/center/
-- https://arktwin.github.io/arktwin/swagger-ui/edge/
+- https://arktrio.github.io/arktrio/swagger-ui/center/
+- https://arktrio.github.io/arktrio/swagger-ui/edge/
 
 ## Metrics for Prometheus
 
@@ -262,30 +262,30 @@ For more details on mailboxes, see [Pekko Mailboxes documentation](https://pekko
 
 ## Publications
 
-- Akira Yoshioka, Takatomo Torigoe, Naoki Akiyama, Hideki Fujii, Takashi Machida, Satoru Nakanishi, Takayoshi Yoshimura. ArkTwin: Distributed Heterogeneous Multi-Agent Simulation Platform. [Multimedia, Distributed, Cooperative, and Mobile Symposium 2024 (in Japanese)](https://www.dicomo.org/2024/). (awarded first prize at the Noguchi Awards)
+- Akira Yoshioka, Takatomo Torigoe, Naoki Akiyama, Hideki Fujii, Takashi Machida, Satoru Nakanishi, Takayoshi Yoshimura. Arktrio: Distributed Heterogeneous Multi-Agent Simulation Platform. [Multimedia, Distributed, Cooperative, and Mobile Symposium 2024 (in Japanese)](https://www.dicomo.org/2024/). (awarded first prize at the Noguchi Awards)
 
 ## Contributing
 
 Pull requests for bug fixes and feature development are very welcome.
-Your contributions are more acceptable if you start a conversation in [Discussions](https://github.com/arktwin/arktwin/discussions) or [Issues](https://github.com/arktwin/arktwin/issues).
+Your contributions are more acceptable if you start a conversation in [Discussions](https://github.com/terrafying/arktrio/discussions) or [Issues](https://github.com/terrafying/arktrio/issues).
 
-We are especially interested in your ideas and examples for using ArkTwin.
-Please feel free to share them in [Show and tell](https://github.com/arktwin/arktwin/discussions/categories/show-and-tell).
+We are especially interested in your ideas and examples for using Arktrio.
+Please feel free to share them in [Show and tell](https://github.com/terrafying/arktrio/discussions/categories/show-and-tell).
 
 ## License
 
-ArkTwin source code is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0), Copyright 2024-2025 TOYOTA MOTOR CORPORATION.
+Arktrio source code is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0), Copyright 2024-2025 TOYOTA MOTOR CORPORATION.
 
-If you need license lists for libraries that ArkTwin Center or Edge depends on, follow these steps:
+If you need license lists for libraries that Arktrio Center or Edge depends on, follow these steps:
 
-- ArkTwin Center
+- Arktrio Center
   1. `cd arktwin`
   1. `sbt center/dumpLicenseReport`
   1. Check generated files in `center/target/license-reports`
-- ArkTwin Edge
+- Arktrio Edge
   1. `cd arktwin`
   1. `sbt edge/dumpLicenseReport`
   1. Check generated files in `edge/target/license-reports`
-- ArkTwin Edge Neighbors viewer
+- Arktrio Edge Neighbors viewer
   1. `cd arktwin/viewer`
   1. `npm run license-check`
